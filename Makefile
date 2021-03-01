@@ -1,4 +1,4 @@
-VERSION := "2.3.2"
+VERSION := "2.4.0"
 
 BUILD := $(shell git rev-parse --short HEAD)
 FLAGS	:= "-s -w -X=main.build=$(BUILD) -X=main.time=`TZ=UTC date '+%FT%TZ'` -X=main.version=$(VERSION)"
@@ -14,6 +14,10 @@ build/awsu-linux-amd64:
 		"apt-get update -q && apt-get install -qqy libpcsclite-dev && cd /go/src/github.com/kreuzwerker/awsu && go mod download && go build -o $@ -ldflags $(FLAGS) awsu.go"
 
 build/awsu-darwin-amd64:
+	@mkdir -p build
+	GO111MODULES=on nice go build -o $@ -ldflags $(FLAGS) awsu.go
+
+build/awsu-windows-amd64.exe:
 	@mkdir -p build
 	GO111MODULES=on nice go build -o $@ -ldflags $(FLAGS) awsu.go
 
